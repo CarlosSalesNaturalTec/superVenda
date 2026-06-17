@@ -1,22 +1,18 @@
-# Product Requirements Document (PRD) — SG-Varejo
+# Product Requirements Document (PRD) — SuperVendas
 
 ## 1. Visão Geral e Problema
 
 Pequenos varejistas brasileiros multi-segmento (mercados, vestuário, calçados, cosméticos, autopeças, depósitos, informática, materiais de construção, confecções e bijuterias) operam hoje sem um sistema único que centralize todo o seu ciclo operacional. Utilizam cadernos, planilhas soltas ou sistemas fragmentados, o que gera retrabalho, perda de informações e falta de visibilidade sobre a saúde financeira do negócio.
 
-O SG-Varejo resolve essa dor com um sistema de gestão completo e off-line para o pequeno varejista: cadastros, ponto de venda (PDV) com leitor de código de barras, vendas a prazo com controle de crédito, compras via importação de XML de nota fiscal, controle de estoque com alertas, fluxo de caixa, contas a pagar/receber e relatórios gerenciais (incluindo DRE simplificado). Tudo isso operando em um único computador, sem dependência de internet, com banco de dados local e backup manual.
+O SuperVendas resolve essa dor com um sistema de gestão completo e off-line para o pequeno varejista: cadastros, ponto de venda (PDV) com leitor de código de barras, vendas a prazo com controle de crédito, compras via importação de XML de nota fiscal, controle de estoque com alertas, fluxo de caixa, contas a pagar/receber e relatórios gerenciais (incluindo DRE simplificado). Tudo isso operando em um único computador, sem dependência de internet, com banco de dados local e backup manual.
 
 O objetivo do MVP é entregar um sistema funcional e confiável que permita ao lojista operar o dia a dia do seu negócio com autonomia total — da abertura do caixa pela manhã até o backup dos dados ao final do expediente.
 
 ## 2. Personas
 
-* **Proprietário/Gerente Geral:** Dono do negócio. Tem acesso irrestrito ao sistema. Opera relatórios gerenciais (DRE, fluxo de caixa, lucro), gerencia cadastros mestres (empresa, fornecedores, formas de pagamento, taxas), define limites de crédito dos clientes, aprova exclusões e alterações críticas via senha de gerente, e é o único responsável por realizar backup e restauração dos dados. Sua principal dor é não saber exatamente quanto está ganhando ou perdendo, e não ter controle sobre quem deve e quando pagar.
+* **Proprietário/Gerente Geral:** Dono do negócio. Tem acesso irrestrito ao sistema. Acumula todas as funções administrativas: opera relatórios gerenciais (DRE, fluxo de caixa, lucro), gerencia cadastros mestres (empresa, fornecedores, formas de pagamento, taxas), define limites de crédito dos clientes, aprova exclusões e alterações críticas via senha de gerente, e é o único responsável por realizar backup e restauração dos dados. Também é responsável pela retaguarda financeira (lança contas a pagar e a receber, dá baixas, registra sangrias, acompanha o fluxo de caixa) e pela gestão de estoque e compras (cadastro de produtos com foto/código de barras/grupo/preço, importação de XML de NF-e, importação de planilhas Excel, conferência e inventário de estoque, emissão de cartas de cobrança e etiquetas). Sua principal dor é não ter uma visão centralizada e integrada de todas as áreas do negócio em um único sistema.
 
-* **Vendedor/Atendente de Balcão:** Opera o dia a dia das vendas. Abre e fecha o caixa, consulta produtos (por código, descrição ou referência), verifica a situação do cliente (limite de crédito disponível, atrasos), registra vendas à vista e a prazo com até duas formas de pagamento, imprime notas de venda A4. Tem acesso restrito: pode ter limite máximo de desconto, não acessa relatórios gerenciais e não pode excluir ou alterar vendas já finalizadas sem senha de gerente. Sua dor é a lentidão no atendimento quando precisa consultar múltiplas fontes para fechar uma venda.
-
-* **Financeiro/Contas:** Responsável pela retaguarda financeira. Lança contas a pagar e a receber, dá baixas, registra sangrias de caixa e acompanha o fluxo de caixa. Não necessariamente opera vendas, mas precisa de visibilidade sobre o que entrou e saiu. Sua dor é a falta de um registro centralizado do que está pendente de pagamento ou recebimento, o que gera atrasos e perda de prazos.
-
-* **Estoquista/Comprador:** Responsável pelo cadastro e manutenção de produtos (foto, código de barras, grupo/subgrupo, preço normal e preço alternativo), importação de compras via XML de nota fiscal, importação de produtos via planilha Excel, ajuste de estoque e emissão de etiquetas (pós-MVP). Sua dor é o tempo gasto para cadastrar produtos um a um e a falta de visibilidade sobre o que está acabando no estoque.
+* **Vendedor/Atendente de Balcão:** Opera o dia a dia das vendas. Abre e fecha o caixa, consulta produtos (por código, descrição ou referência), verifica a situação do cliente (limite de crédito disponível, atrasos), registra vendas à vista e a prazo com até duas formas de pagamento, imprime notas de venda A4. Tem acesso restrito: pode ter limite máximo de desconto, não acessa relatórios gerenciais, não acessa funções financeiras e não pode excluir ou alterar vendas já finalizadas sem senha de gerente. Sua dor é a lentidão no atendimento quando precisa consultar múltiplas fontes para fechar uma venda.
 
 ## 3. Escopo do MVP
 
@@ -35,6 +31,8 @@ O objetivo do MVP é entregar um sistema funcional e confiável que permita ao l
   * Relatórios: vendas (por vendedor, período, cliente, produto, categoria, forma de pagamento, margem de lucro, produtos mais vendidos), compras (por período, fornecedor, produto), estoque (posição atual, estoque mínimo, validade), financeiro (contas a pagar/receber/pagas/recebidas, fluxo de caixa)
   * Consultas: produtos (código, descrição, referência), situação do cliente (limite, atrasos, histórico de vendas, bloqueios), aniversariantes, estoque financeiro, informativos de contas a pagar e a receber
   * Importação de produtos e clientes via planilha Excel
+  * Emissão de cartas de cobrança para clientes em atraso
+  * Módulo de conferência e inventário físico de estoque (contagem e ajuste)
   * Licenciamento por arquivo-chave (anti-pirataria), vinculado à instalação
   * Controle de sessão: login/logout com múltiplos perfis, operação mono-terminal (1 pessoa por vez)
 
@@ -42,9 +40,7 @@ O objetivo do MVP é entregar um sistema funcional e confiável que permita ao l
   * Emissão de documentos fiscais eletrônicos (NFC-e, NF-e, NFS-e)
   * Operação em rede / múltiplos terminais (PDVs simultâneos)
   * Emissão de recibos avulsos
-  * Emissão de cartas de cobrança para clientes
   * Impressão de etiquetas de produtos para código de barras
-  * Módulo de conferência e inventário físico de estoque
   * Gráfico visual de vendas (substituído por relatório tabular no MVP)
   * Gestão de comissão sobre vendas
   * Alteração de preço em massa
@@ -67,15 +63,15 @@ O objetivo do MVP é entregar um sistema funcional e confiável que permita ao l
       * **Quando** o proprietário altera qualquer campo dos dados da empresa e salva
       * **Então** as alterações são aplicadas imediatamente a todas as novas impressões, sem afetar documentos já emitidos
 
-* **US 1.2:** Como Estoquista, eu quero cadastrar produtos com foto, código de barras, grupo/subgrupo, preço normal, preço 2 e validade para que o catálogo de produtos esteja completo e pronto para venda.
+* **US 1.2:** Como Proprietário, eu quero cadastrar produtos com foto, código de barras, grupo/subgrupo, preço normal, preço 2 e validade para que o catálogo de produtos esteja completo e pronto para venda.
   * **Critérios de Aceitação:**
     * *Cenário 1: Cadastro completo de um produto*
-      * **Dado** que o estoquista está autenticado e na tela de cadastro de produtos
+      * **Dado** que o proprietário está autenticado e na tela de cadastro de produtos
       * **Quando** ele preenche descrição, código de barras, seleciona grupo e subgrupo, define preço normal, preço 2, estoque inicial, estoque mínimo, data de validade e carrega uma foto, então salva
       * **Então** o produto fica disponível para consulta e venda no PDV, e aparece nos relatórios de estoque
     * *Cenário 2: Código de barras duplicado*
       * **Dado** que já existe um produto cadastrado com o código de barras "7891234567890"
-      * **Quando** o estoquista tenta cadastrar outro produto com o mesmo código de barras
+      * **Quando** o proprietário tenta cadastrar outro produto com o mesmo código de barras
       * **Então** o sistema rejeita o cadastro e exibe mensagem "Código de barras já cadastrado para o produto [nome do produto]"
 
 * **US 1.3:** Como Proprietário, eu quero cadastrar clientes com foto e limite de crédito para que o sistema controle automaticamente as vendas a prazo.
@@ -185,15 +181,15 @@ O objetivo do MVP é entregar um sistema funcional e confiável que permita ao l
 
 ### Épico 3: Gestão Financeira
 
-* **US 3.1:** Como Financeiro, eu quero lançar contas a pagar e a receber e registrar suas baixas para que o sistema reflita com precisão as obrigações e direitos financeiros do negócio.
+* **US 3.1:** Como Proprietário, eu quero lançar contas a pagar e a receber e registrar suas baixas para que o sistema reflita com precisão as obrigações e direitos financeiros do negócio.
   * **Critérios de Aceitação:**
     * *Cenário 1: Lançamento de conta a pagar*
-      * **Dado** que o financeiro está autenticado e na tela de contas a pagar
+      * **Dado** que o proprietário está autenticado e na tela de contas a pagar
       * **Quando** ele lança uma conta de R$ 500,00 com vencimento em 15 dias, informando fornecedor, número do documento e data de vencimento
       * **Então** a conta aparece nos relatórios de contas a pagar e no informativo de vencimentos
     * *Cenário 2: Baixa de conta a receber*
       * **Dado** que o cliente "Maria" possui uma parcela de R$ 70,00 vencendo hoje
-      * **Quando** o financeiro registra o pagamento dessa parcela
+      * **Quando** o proprietário registra o pagamento dessa parcela
       * **Então** a parcela é marcada como paga, o limite de crédito de Maria é restaurado em R$ 70,00, e o valor entra no fluxo de caixa
 
 * **US 3.2:** Como Proprietário, eu quero visualizar o fluxo de caixa detalhado e resumido para saber exatamente quanto dinheiro entrou, saiu e qual o saldo em qualquer período.
@@ -214,7 +210,7 @@ O objetivo do MVP é entregar um sistema funcional e confiável que permita ao l
       * **Quando** o proprietário acessa o DRE com filtro do mês corrente
       * **Então** o sistema exibe: Receita Bruta (vendas) = R$ 50.000,00, CMV (compras) = R$ 30.000,00, Lucro Bruto = R$ 20.000,00, e Margem = 40%
 
-* **US 3.4:** Como Vendedor ou Financeiro, eu quero registrar uma sangria de caixa para que retiradas de dinheiro do caixa durante o expediente sejam registradas e o saldo permaneça correto.
+* **US 3.4:** Como Vendedor ou Proprietário, eu quero registrar uma sangria de caixa para que retiradas de dinheiro do caixa durante o expediente sejam registradas e o saldo permaneça correto.
   * **Critérios de Aceitação:**
     * *Cenário 1: Registro de sangria*
       * **Dado** que o caixa está aberto com saldo atual de R$ 500,00 em dinheiro
@@ -223,26 +219,26 @@ O objetivo do MVP é entregar um sistema funcional e confiável que permita ao l
 
 ### Épico 4: Compras, Estoque e Relatórios
 
-* **US 4.1:** Como Estoquista, eu quero importar produtos de um arquivo XML de nota fiscal de compra para que o estoque e os preços sejam atualizados automaticamente sem redigitação.
+* **US 4.1:** Como Proprietário, eu quero importar produtos de um arquivo XML de nota fiscal de compra para que o estoque e os preços sejam atualizados automaticamente sem redigitação.
   * **Critérios de Aceitação:**
     * *Cenário 1: Importação de XML válido*
-      * **Dado** que o estoquista está na tela de compras
+      * **Dado** que o proprietário está na tela de compras
       * **Quando** ele seleciona um arquivo XML de nota fiscal de compra contendo 10 produtos, e confirma a importação
       * **Então** os 10 produtos são localizados no cadastro (ou criados se novos), o estoque é incrementado com as quantidades do XML, os preços de custo são atualizados, e a compra fica registrada nos relatórios de compras por fornecedor e período
     * *Cenário 2: XML inválido ou corrompido*
-      * **Dado** que o estoquista seleciona um arquivo que não é um XML de NF-e válido
+      * **Dado** que o proprietário seleciona um arquivo que não é um XML de NF-e válido
       * **Quando** o sistema tenta processar o arquivo
       * **Então** o sistema rejeita o arquivo e exibe "Arquivo inválido. Selecione um XML de Nota Fiscal eletrônica (NF-e)"
 
-* **US 4.2:** Como Estoquista, eu quero importar produtos e clientes via planilha Excel para migrar rapidamente dados de outros sistemas ou fazer cadastros em lote.
+* **US 4.2:** Como Proprietário, eu quero importar produtos e clientes via planilha Excel para migrar rapidamente dados de outros sistemas ou fazer cadastros em lote.
   * **Critérios de Aceitação:**
     * *Cenário 1: Importação de produtos via Excel*
-      * **Dado** que o estoquista possui uma planilha Excel com 50 produtos (colunas: descrição, código de barras, grupo, preço, estoque)
+      * **Dado** que o proprietário possui uma planilha Excel com 50 produtos (colunas: descrição, código de barras, grupo, preço, estoque)
       * **Quando** ele seleciona o arquivo e confirma a importação
       * **Então** os 50 produtos são cadastrados, e o sistema exibe um resumo: "50 produtos importados com sucesso, 0 com erro"
     * *Cenário 2: Planilha com dados inconsistentes*
       * **Dado** que a planilha Excel contém linhas sem descrição ou com código de barras duplicado
-      * **Quando** o estoquista tenta importar
+      * **Quando** o proprietário tenta importar
       * **Então** o sistema importa apenas as linhas válidas e exibe um relatório: "45 produtos importados, 5 linhas com erro (linha 3: descrição vazia, linha 7: código de barras duplicado, ...)"
 
 * **US 4.3:** Como Proprietário, eu quero que o sistema me alerte sobre produtos com estoque abaixo do mínimo para que eu possa fazer novos pedidos antes de ficar sem mercadoria.
@@ -264,8 +260,30 @@ O objetivo do MVP é entregar um sistema funcional e confiável que permita ao l
       * **Então** o relatório lista apenas esses 3 produtos com estoque atual, estoque mínimo, grupo e sugestão de quantidade a comprar (mínimo - atual)
     * *Cenário 3: Relatório de contas a receber vencidas*
       * **Dado** que existem 5 parcelas vencidas de 3 clientes diferentes
-      * **Quando** o financeiro gera o relatório de contas a receber com status "Vencidas"
+      * **Quando** o proprietário gera o relatório de contas a receber com status "Vencidas"
       * **Então** o relatório lista as 5 parcelas com cliente, valor, data de vencimento, dias de atraso e valor acumulado por cliente
+
+* **US 4.5:** Como Proprietário, eu quero emitir cartas de cobrança para clientes com parcelas em atraso para notificá-los formalmente sobre a pendência e solicitar a regularização.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Emissão de carta de cobrança para um cliente*
+      * **Dado** que o cliente "João" possui 2 parcelas vencidas totalizando R$ 300,00, com atraso de 15 dias
+      * **Quando** o proprietário acessa a função de emissão de cartas de cobrança, seleciona "João" e confirma a geração
+      * **Então** o sistema gera uma carta de cobrança contendo: dados da empresa (com logotipo), dados do cliente, data de emissão, lista de parcelas vencidas (valor, vencimento, dias de atraso), valor total devido, e instruções para pagamento, pronta para impressão
+    * *Cenário 2: Cliente sem parcelas em atraso*
+      * **Dado** que o cliente "Maria" está com todas as parcelas pagas ou dentro do prazo
+      * **Quando** o proprietário tenta emitir carta de cobrança para "Maria"
+      * **Então** o sistema exibe "Cliente não possui débitos em atraso" e não gera a carta
+
+* **US 4.6:** Como Proprietário, eu quero realizar conferência e ajuste de inventário físico de estoque para que o saldo registrado no sistema reflita com precisão a quantidade real de produtos disponíveis.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Conferência e ajuste de estoque*
+      * **Dado** que o produto "Detergente 500ml" tem estoque registrado de 50 unidades, mas a contagem física encontrou 47 unidades
+      * **Quando** o proprietário acessa o módulo de conferência de estoque, localiza o produto e informa a quantidade real de 47
+      * **Então** o sistema registra o ajuste de -3 unidades com data/hora, motivo "Conferência de inventário" e usuário responsável, atualizando o estoque para 47 unidades e gerando log de auditoria da alteração
+    * *Cenário 2: Relatório de inventário*
+      * **Dado** que o proprietário realizou a conferência de todos os produtos do grupo "Limpeza"
+      * **Quando** ele gera o relatório de inventário do grupo "Limpeza"
+      * **Então** o relatório exibe cada produto com: quantidade registrada, quantidade conferida, diferença (para mais ou para menos) e valor financeiro da diferença (quantidade × preço de custo), com totais ao final
 
 ### Épico 5: Segurança, Administração e Resiliência
 
@@ -274,7 +292,7 @@ O objetivo do MVP é entregar um sistema funcional e confiável que permita ao l
     * *Cenário 1: Backup bem-sucedido*
       * **Dado** que o proprietário está autenticado e na tela de backup
       * **Quando** ele seleciona uma pasta de destino (ex.: "E:\backup\") e aciona "Gerar Backup"
-      * **Então** o sistema gera um arquivo de backup íntegro com data/hora no nome, exibe "Backup gerado com sucesso em E:\backup\sg-varejo_2026-06-17_15-30.bak" e registra a operação no log do sistema
+      * **Então** o sistema gera um arquivo de backup íntegro com data/hora no nome, exibe "Backup gerado com sucesso em E:\backup\supervendas_2026-06-17_15-30.bak" e registra a operação no log do sistema
     * *Cenário 2: Destino sem espaço ou inacessível*
       * **Dado** que o destino selecionado não tem espaço suficiente ou está inacessível
       * **Quando** o proprietário tenta gerar o backup
@@ -327,7 +345,7 @@ O objetivo do MVP é entregar um sistema funcional e confiável que permita ao l
 2. **RF02 — Cadastro de Produtos:** O sistema deve permitir cadastro de produtos com: descrição, código de barras (único), grupo e subgrupo, preço normal, preço 2, estoque inicial e mínimo, data de validade e foto. O código de barras deve ser validado contra duplicidade.
 3. **RF03 — Cadastro de Clientes:** O sistema deve permitir cadastro de clientes com: nome, CPF/CNPJ, endereço, telefone, foto e limite de crédito para vendas a prazo.
 4. **RF04 — Cadastro de Fornecedores:** O sistema deve permitir cadastro de fornecedores com: razão social, CNPJ, endereço, telefone e contato.
-5. **RF05 — Cadastro de Usuários:** O sistema deve permitir cadastro de usuários com login, senha e perfil de acesso (com restrições configuráveis por funcionalidade). Deve suportar no mínimo os perfis: Proprietário/Gerente, Vendedor, Financeiro e Estoquista.
+5. **RF05 — Cadastro de Usuários:** O sistema deve permitir cadastro de usuários com login, senha e perfil de acesso (com restrições configuráveis por funcionalidade). Deve suportar no mínimo os perfis: Proprietário/Gerente (acesso total) e Vendedor (acesso restrito ao PDV).
 6. **RF06 — Cadastro de Formas de Pagamento:** O sistema deve permitir cadastro de formas de pagamento com taxa configurável (percentual) e flag para inclusão/exclusão do fluxo de caixa.
 7. **RF07 — Controle de Sessão:** O sistema deve exigir autenticação por login e senha. Deve permitir troca de usuário sem fechar o sistema, preservando operações em andamento. Deve bloquear temporariamente após 3 tentativas consecutivas de login com credenciais inválidas.
 8. **RF08 — Abertura e Fechamento de Caixa:** O sistema deve exigir abertura de caixa (com valor de troco inicial) antes de permitir vendas. O fechamento deve exibir resumo de movimentações do dia e, após confirmação, impedir novas vendas.
@@ -349,10 +367,12 @@ O objetivo do MVP é entregar um sistema funcional e confiável que permita ao l
 24. **RF24 — DRE Simplificado:** O sistema deve calcular e exibir o lucro bruto do período (total de vendas - total de compras) com visão diária, mensal e anual.
 25. **RF25 — Relatórios:** O sistema deve gerar relatórios para todos os módulos (vendas, compras, estoque, financeiro) com filtros configuráveis (período, pessoa, categoria, forma de pagamento). Deve exibir totais e subtotais em cada relatório.
 26. **RF26 — Consultas Rápidas:** O sistema deve oferecer consultas de: produtos (por código, descrição, referência), clientes (situação, histórico de vendas, atrasos, bloqueios), aniversariantes do mês, estoque financeiro, informativo de contas a pagar e a receber.
-27. **RF27 — Backup Manual:** O sistema deve permitir que o usuário gere uma cópia de segurança completa dos dados em local de sua escolha, validando a integridade do arquivo gerado e impedindo sobrescrita acidental de backups anteriores.
-28. **RF28 — Restauração de Backup:** O sistema deve permitir restaurar completamente os dados a partir de um arquivo de backup válido, com verificação de integridade antes da restauração e proteção contra restauração de arquivos inválidos ou corrompidos.
-29. **RF29 — Licenciamento por Arquivo-Chave:** O sistema deve exigir ativação via arquivo-chave de uso único, vinculado à instalação. O arquivo-chave não pode ser reutilizado. Deve haver processo de reativação para casos de reinstalação por falha de hardware.
-30. **RF30 — Operação Off-line:** Todas as funcionalidades do sistema devem operar completamente sem conexão com internet, com exceção do processo de ativação de licença (que pode exigir contato com o fornecedor por meios externos).
+27. **RF27 — Emissão de Cartas de Cobrança:** O sistema deve permitir a emissão de cartas de cobrança para clientes com parcelas em atraso, contendo dados da empresa (com logotipo), dados do cliente, lista de débitos (valor, vencimento, dias de atraso), valor total e instruções de pagamento, prontas para impressão.
+28. **RF28 — Conferência e Inventário de Estoque:** O sistema deve permitir a conferência física de estoque com registro de quantidade real apurada para cada produto, calculando automaticamente a diferença e gerando ajuste de estoque com log de auditoria (data/hora, usuário, motivo). Deve gerar relatório de inventário com valor financeiro das diferenças.
+29. **RF29 — Backup Manual:** O sistema deve permitir que o usuário gere uma cópia de segurança completa dos dados em local de sua escolha, validando a integridade do arquivo gerado e impedindo sobrescrita acidental de backups anteriores.
+30. **RF30 — Restauração de Backup:** O sistema deve permitir restaurar completamente os dados a partir de um arquivo de backup válido, com verificação de integridade antes da restauração e proteção contra restauração de arquivos inválidos ou corrompidos.
+31. **RF31 — Licenciamento por Arquivo-Chave:** O sistema deve exigir ativação via arquivo-chave de uso único, vinculado à instalação. O arquivo-chave não pode ser reutilizado. Deve haver processo de reativação para casos de reinstalação por falha de hardware.
+32. **RF32 — Operação Off-line:** Todas as funcionalidades do sistema devem operar completamente sem conexão com internet, com exceção do processo de ativação de licença (que pode exigir contato com o fornecedor por meios externos).
 
 ## 6. Requisitos Não Funcionais
 
@@ -373,7 +393,7 @@ O objetivo do MVP é entregar um sistema funcional e confiável que permita ao l
 1. **Tempo de Atendimento no Balcão:** O tempo médio para registrar e finalizar uma venda simples (1 produto, 1 forma de pagamento, sem cliente) deve ser inferior a 30 segundos, medido do primeiro clique/leitura até a impressão da nota.
 2. **Adoção do Sistema:** O lojista deve conseguir operar o ciclo completo (abertura de caixa → venda → fechamento de caixa → backup) sem consultar documentação externa após 2 dias de uso.
 3. **Zero Perda de Dados:** Nenhum incidente de perda ou corrupção de dados reportado nos primeiros 90 dias de uso, desde que o usuário realize backups conforme orientação.
-4. **Cobertura do Ciclo Operacional:** O lojista não deve precisar recorrer a nenhum sistema externo (planilha, caderno) para gerenciar seu negócio após a adoção completa do SG-Varejo.
+4. **Cobertura do Ciclo Operacional:** O lojista não deve precisar recorrer a nenhum sistema externo (planilha, caderno) para gerenciar seu negócio após a adoção completa do SuperVendas.
 5. **Autonomia do Usuário:** O lojista deve conseguir instalar, ativar e configurar o sistema sem assistência técnica remota ou presencial em pelo menos 80% dos casos.
 6. **Precisão Financeira:** A diferença entre o saldo de caixa calculado pelo sistema e o saldo real (conferência física) deve ser zero em condições normais de operação (sem erros de troco ou esquecimento de registro pelo operador).
 7. **Conformidade com Licenciamento:** Zero instâncias de uso não licenciado viabilizadas por falha no mecanismo de arquivo-chave nos primeiros 12 meses.
