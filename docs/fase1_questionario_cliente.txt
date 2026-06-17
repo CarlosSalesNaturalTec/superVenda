@@ -1,0 +1,70 @@
+ALINHAMENTO DE ESCOPO E DISCOVERY
+
+Olá! O material enviado é um ótimo ponto de partida. A lista de funcionalidades está muito bem organizada e cobre praticamente todos os processos do dia a dia de uma loja. Para garantirmos que o produto resolva exatamente o seu problema da melhor forma, precisamos alinhar os seguintes pontos:
+
+AMBIENTE DE USO
+
+1. Em qual tipo de computador e programa base o sistema será usado?
+(x) a) Computador com Windows 10 ou 11
+( ) b) Computador com Windows e também Linux
+( ) c) Outro: ____________
+
+2. Hoje o uso é de apenas 1 computador com 1 pessoa por vez. Você pretende no futuro usar mais de um computador ao mesmo tempo (em rede)?
+( ) a) Não, sempre será 1 computador apenas
+( ) b) Talvez no futuro, gostaria que o sistema já fosse preparado para isso
+(x) c) Sim, pretendo usar em rede em breve
+
+USUÁRIOS E PERMISSÕES
+
+3. Quais tipos de funções de usuário o sistema deve ter e o que cada um pode fazer?
+(x) a) Apenas 2 níveis: Gerente (acesso total) e Vendedor (apenas vendas e consultas)
+( ) b) Três níveis: Gerente, Vendedor e Financeiro (acessa contas a pagar/receber, mas não altera cadastros)
+( ) c) Outro: ____________
+
+4. A senha de gerente para exclusão ou alteração de vendas e produtos deve ser:
+(x) a) A mesma senha do usuário gerente logado no momento
+( ) b) Uma senha mestra única, separada do login
+( ) c) Outro: ____________
+
+PRODUTOS E PREÇOS
+
+5. O segundo preço do produto (preço a prazo ou atacado) deve ser aplicado como?
+(x) a) O vendedor escolhe manualmente qual preço usar em cada venda
+( ) b) O sistema aplica automaticamente: preço normal nas vendas à vista e o segundo preço nas vendas a prazo
+( ) c) O segundo preço é para venda em quantidade (atacado) e o sistema aplica automaticamente quando atinge uma quantidade mínima
+( ) d) Outro: ____________
+
+6. Sobre a data de validade dos produtos: você precisa que o sistema controle e alerte sobre vencimentos próximos?
+( ) a) Sim, quero cadastrar data de validade nos produtos e ser avisado quando estiver próximo do vencimento
+(x) b) Não preciso de controle de validade, apenas do controle de estoque mínimo
+( ) c) Outro: ____________
+
+VENDAS E FINANCEIRO
+
+7. Nas vendas a prazo (carnê), o acréscimo por parcelamento deve ser calculado de qual forma?
+( ) a) Um percentual fixo por parcela (ex: 2% ao mês sobre o valor da venda)
+( ) b) Uma taxa fixa em reais por parcela (ex: R$ 3,00 a mais por parcela)
+(x) c) Uma tabela onde eu defino manualmente o acréscimo para cada número de parcelas (ex: 2x = 3%, 3x = 5%, 4x = 8%)
+( ) d) Outro: ____________
+
+8. No cálculo do lucro (DRE), além de vendas menos compras, você precisa incluir outras saídas como despesas fixas (aluguel, luz, salários)?
+( ) a) Não, quero apenas o cálculo simples: total de vendas menos total de compras no período
+(x) b) Sim, gostaria de lançar despesas fixas mensais e incluí-las no cálculo do lucro
+( ) c) Outro: ____________
+
+LICENCIAMENTO E SEGURANÇA
+
+9. Se o computador quebrar, for formatado ou trocado, como você imagina que a reinstalação do sistema deve funcionar?
+(x) a) Entro em contato com o suporte para liberar uma nova chave de ativação, comprovando a situação
+( ) b) Gero uma chave de desinstalação no sistema antigo (se ainda funcionar) que libera a instalação no novo
+( ) c) Outro: ____________
+
+COMISSIONAMENTO
+
+10. Sobre a comissão de vendedores que aparece nos utilitários: como ela deve funcionar?
+( ) a) Um percentual fixo sobre o valor de cada venda, aplicado a todos os produtos
+(x) b) Um percentual definido por produto, podendo ser diferente para cada item
+( ) c) Não preciso de controle de comissão automatizado, apenas gostaria de alterar preços em lote
+( ) d) Outro: ____________
+
+Agradecemos desde já pela atenção! Suas respostas nos permitirão criar um produto sob medida para o seu negócio.
