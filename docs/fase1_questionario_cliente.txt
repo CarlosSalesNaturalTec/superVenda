@@ -1,0 +1,96 @@
+ALINHAMENTO DE ESCOPO E DISCOVERY
+
+Ola! O material enviado e um otimo ponto de partida. O nivel de detalhe dos modulos de cadastro, movimentacao, financeiro, relatorios, consultas e gerenciamento mostra que voce ja tem uma visao muito clara do que precisa. Isso e excelente e acelera bastante o nosso trabalho.
+
+Para garantirmos que o produto final resolva exatamente o seu problema da melhor forma, precisamos alinhar alguns poucos pontos que ficaram em aberto. Nao se preocupe -- sao questoes pontuais que ajudam a evitar retrabalho la na frente.
+
+----------
+
+FORMAS DE PAGAMENTO
+
+1. Quais formas de pagamento a sua loja aceita no dia a dia?
+( ) a) Apenas dinheiro
+( ) b) Dinheiro e cartoes (credito e debito)
+( ) c) Dinheiro, cartoes e cheque
+(x) d) Dinheiro, cartoes e PIX
+( ) e) Outro: ____________
+
+----------
+
+REGRAS DO CARNE (CREDIARIO)
+
+2. Como funciona o parcelamento no carne da sua loja?
+( ) a) Parcelas fixas (ex: sempre em 3 vezes)
+(x) b) O cliente escolhe o numero de parcelas, com um maximo definido pela loja (ex: ate 12 vezes)
+( ) c) Depende do valor da compra (ex: compras acima de R$100 podem parcelar)
+( ) d) Outro: ____________
+
+3. Sobre juros e multas no carnê atrasado, como voce costuma trabalhar?
+( ) a) Nao cobro juros nem multa
+( ) b) Cobro apenas um valor fixo de multa por atraso
+(x) c) Cobro juros por dia de atraso mais uma multa fixa
+( ) d) Outro: ____________
+
+----------
+
+DESCONTOS E CANCELAMENTOS
+
+4. Durante uma venda, o vendedor pode conceder desconto sobre o valor dos produtos?
+(x) a) Nao, apenas o gerente pode dar desconto usando a senha dele
+( ) b) Sim, o vendedor pode dar ate um limite maximo (ex: 5%)
+( ) c) Sim, o vendedor pode dar qualquer desconto sem restricao
+( ) d) Outro: ____________
+
+5. Quando um cliente devolve um produto ou cancela uma compra, como voce trata hoje?
+(x) a) Simplesmente desfaz a venda, o produto volta ao estoque e o dinheiro e devolvido
+( ) b) Emite um comprovante de devolucao e o valor fica como credito para o cliente
+( ) c) Ambos os casos acima, dependendo da situacao
+( ) d) Nao trabalho com devolucao atualmente
+( ) e) Outro: ____________
+
+----------
+
+OPERACAO DA LOJA
+
+6. Em quais segmentos o sistema sera usado? (escolha os que se aplicam)
+(x) a) Apenas um tipo de comercio por instalacao (ex: so mercado, ou so loja de roupa)
+( ) b) Mais de um tipo na mesma instalacao, e preciso de telas diferentes para cada segmento
+( ) c) Mais de um tipo na mesma instalacao, mas a mesma tela serve para todos
+( ) d) Nao tenho certeza ainda
+( ) e) Outro: ____________
+
+7. Sobre a sangria (retirada de dinheiro do caixa durante o dia):
+(x) a) Apenas o gerente pode fazer, com registro obrigatorio do valor e motivo
+( ) b) Vendedor tambem pode fazer, desde que registre o motivo
+( ) c) Nao uso sangria, o dinheiro so sai no fechamento do caixa
+( ) d) Outro: ____________
+
+8. Quando um produto atinge a quantidade minima de estoque, o sistema deve:
+(x) a) Apenas mostrar um aviso na tela, mas permitir a venda normalmente
+( ) b) Mostrar um aviso e bloquear a venda ate que o estoque seja reposto
+( ) c) Apenas exibir nos relatorios de estoque minimo, sem alerta na venda
+( ) d) Outro: ____________
+
+----------
+
+IMPRESSAO E EQUIPAMENTOS
+
+9. Alem da nota de venda em formato A4, voce precisa de impressao de cupom em impressora termica (cuponzinho nao fiscal)?
+(x) a) Nao, apenas a nota A4 resolve
+( ) b) Sim, quero os dois formatos: nota A4 e cupom termico
+( ) c) Apenas cupom termico ja resolve
+( ) d) Outro: ____________
+
+----------
+
+IMPLANTACAO E INICIO DE USO
+
+10. Voce ja tem produtos, clientes e carnês em outro sistema ou planilha que precisarao ser trazidos para o novo sistema?
+( ) a) Sim, tenho tudo em planilhas e vou precisar importar
+( ) b) Sim, tenho em outro sistema e quero migrar os dados
+(x) c) Nao, vou cadastrar tudo manualmente do zero
+( ) d) Outro: ____________
+
+----------
+
+Muito obrigado pela atencao! Com essas respostas conseguimos ja iniciar o desenho da solucao com muito mais seguranca.
