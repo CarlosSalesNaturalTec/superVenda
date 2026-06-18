@@ -1,0 +1,424 @@
+# Product Requirements Document (PRD) — superVenda
+
+## 1. Visão Geral e Problema
+
+Pequenos e médios varejistas multi-segmento (mercados, lojas de roupa, calçados, cosméticos, auto peças, depósitos, informática, material de construção, confecções, bijuterias) operam com infraestrutura mínima: um único computador Windows 11, sem conexão à internet, com apenas um operador por vez. Hoje, muitos desses negócios carecem de um sistema unificado e simples que integre, em um único ambiente local, o ponto de venda (PDV), o controle de estoque e a gestão financeira — incluindo creditário próprio (carnê) com cálculo de lucratividade. 
+
+O objetivo do superVenda é ser o sistema único de gestão para esse lojista, cobrindo de ponta a ponta o ciclo operacional diário: da abertura do caixa e venda no balcão até o acompanhamento do contas a receber de carnê, com relatórios essenciais para tomada de decisão. Tudo isso funcionando de forma 100% offline, com proteção contra cópia ilegal via licenciamento por arquivo-chave e resiliência contra perda de dados via backup manual realizado pelo próprio lojista.
+
+## 2. Personas
+
+* **Gerente / Proprietário (Acesso Total):** É o dono ou gestor da loja. Responsável por cadastrar produtos, fornecedores e clientes; definir limites de crédito; abrir e fechar o caixa; conceder descontos (via senha); realizar sangrias; lançar e baixar contas a pagar e a receber; executar backup e restauração; e acessar todos os relatórios e consultas. Sua principal dor é a falta de visibilidade financeira consolidada e a dificuldade de controlar o carnê manualmente. Precisa de controle total com registro de auditoria das ações críticas.
+
+* **Vendedor / Operador de Caixa (Acesso Restrito):** É o funcionário que opera o balcão. Realiza vendas no PDV, consulta produtos e situação de clientes. Não pode alterar preços, conceder descontos, excluir vendas, acessar relatórios financeiros ou realizar sangrias sem a senha do gerente. Sua principal dor é a lentidão no atendimento quando precisa chamar o gerente para operações simples. Precisa de um fluxo de venda rápido, intuitivo e com poucas possibilidades de erro.
+
+* **Cliente Final / Consumidor (Entidade Cadastrada):** Pessoa física que compra na loja. Pode ter cadastro com informações pessoais, limite de crédito para compras no carnê, histórico de compras e situação de crédito (liberado ou bloqueado por atraso). É a entidade central do creditário — o sistema deve permitir que o vendedor consulte rapidamente sua situação antes de autorizar uma venda a prazo.
+
+* **Suporte Técnico / Fornecedor do Sistema (Agente Externo):** Responsável por liberar nova chave de ativação quando o lojista trocar de computador, formatar a máquina ou tiver falha de hardware que inviabilize a instalação original. Precisa de um procedimento definido para validar a solicitação do lojista e gerar uma nova chave, garantindo que a proteção de licença não seja burlada.
+
+## 3. Escopo do MVP
+
+* **Dentro do Escopo:**
+  * Cadastro de empresa (com logotipo), produtos (com código de barras, grupo/subgrupo, preço normal e preço carnê), clientes (com limite de crédito) e fornecedores
+  * Login com 2 níveis de acesso (Gerente com acesso total; Vendedor apenas para vendas e consultas)
+  * Abertura e fechamento de caixa com conferência de saldo
+  * PDV completo: venda com múltiplos itens, múltiplas formas de pagamento (dinheiro, cartão de crédito, cartão de débito, PIX), desconto via senha de gerente, nota de venda A4 com logotipo
+  * Baixa automática de estoque na venda e reposição manual de estoque
+  * Cancelamento de venda com devolução ao estoque e estorno financeiro
+  * Sangria com registro obrigatório de valor e motivo (apenas gerente)
+  * Carnê / creditário: parcelamento definido pelo cliente até um máximo parametrizável, cálculo de juros diários + multa fixa por atraso, limite de crédito por cliente, baixa de parcelas
+  * Contas a pagar: lançamento e baixa manual
+  * Lançamento de despesas fixas mensais (aluguel, luz, salários) para base de cálculo de lucratividade
+  * Relatórios essenciais: vendas do dia, vendas por período, vendas por vendedor, vendas por cliente, vendas por forma de pagamento, vendas por produto e categoria
+  * Relatórios financeiros: contas a pagar, contas pagas, contas a receber (carnê), contas recebidas, fluxo de caixa detalhado e resumido
+  * Relatórios de estoque: posição de estoque, estoque mínimo
+  * Consultas: produtos (por código, descrição), clientes em atraso, histórico de vendas por cliente, situação do cliente
+  * Alerta visual de estoque mínimo durante a venda (sem bloqueio)
+  * Backup manual (o lojista escolhe quando e onde salvar) e restauração de backup
+  * Proteção de licença via arquivo-chave vinculado ao computador (anti-cópia)
+  * Registro de log/auditoria para ações críticas (exclusão, desconto, sangria, alteração de preço)
+
+* **Fora de Escopo:**
+  * Dashboard com gráficos de vendas (será entregue em versão futura)
+  * Relatório DRE completo com cálculo de lucratividade integrando despesas fixas (será entregue em versão futura; no MVP, o lançamento de despesas fixas estará disponível, mas o cálculo consolidado DRE virá depois)
+  * Relatórios avançados: margem de lucro por produto, ranking de produtos mais vendidos, compras por período e fornecedor
+  * Conferência e ajuste de estoque (inventário)
+  * Emissão de cartas de cobrança para clientes inadimplentes
+  * Consulta de aniversariantes
+  * Cadastro de clientes com foto
+  * Cadastro de produtos com foto
+  * Suporte a impressora térmica (cupom não fiscal)
+  * Importação / migração de dados de sistemas anteriores ou planilhas
+  * Funcionamento em rede ou múltiplos computadores
+  * Suporte a múltiplos segmentos na mesma instalação com telas diferentes por segmento
+  * Emissão de documentos fiscais (NF-e, NFC-e, SAT)
+  * Controle de validade de produtos
+
+## 4. Histórias de Usuário e Critérios de Aceitação
+
+### Épico 1: Operação de Caixa e PDV
+
+* **US 1.1:** Como Gerente, eu quero abrir o caixa informando um valor inicial para que as movimentações do dia tenham uma base de conferência.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Abertura de caixa com sucesso*
+      * **Dado** que o sistema está em execução e nenhum caixa está aberto no dia atual
+      * **Quando** o Gerente acessa a função de abertura de caixa e informa o valor inicial de R$ 100,00
+      * **Então** o sistema registra a abertura com data/hora, o valor inicial de R$ 100,00 e o saldo do caixa passa a ser R$ 100,00
+    * *Cenário 2: Tentativa de abertura com caixa já aberto*
+      * **Dado** que já existe um caixa aberto no dia atual
+      * **Quando** o Gerente tenta abrir um novo caixa
+      * **Então** o sistema exibe a mensagem "Já existe um caixa aberto" e impede a duplicidade
+    * *Cenário 3: Vendedor não pode abrir caixa*
+      * **Dado** que o usuário logado tem perfil de Vendedor
+      * **Quando** ele tenta acessar a função de abertura de caixa
+      * **Então** o sistema não exibe a opção de abertura de caixa no menu
+
+* **US 1.2:** Como Gerente, eu quero fechar o caixa conferindo o saldo para que eu tenha um registro de fechamento com as movimentações do dia.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Fechamento de caixa com conferência*
+      * **Dado** que o caixa está aberto com saldo inicial de R$ 100,00, houve R$ 500,00 em vendas em dinheiro e R$ 50,00 de sangria
+      * **Quando** o Gerente acessa a função de fechamento, o sistema exibe o saldo esperado de R$ 550,00 e o Gerente confirma
+      * **Então** o caixa é fechado, registrado com data/hora de fechamento, e o saldo final de R$ 550,00 é consolidado
+    * *Cenário 2: Fechamento com divergência*
+      * **Dado** que o saldo esperado é R$ 550,00
+      * **Quando** o Gerente informa que o valor real conferido no dinheiro físico é R$ 540,00
+      * **Então** o sistema registra o fechamento com divergência de -R$ 10,00 e armazena essa informação para consulta futura
+    * *Cenário 3: Tentativa de venda com caixa fechado*
+      * **Dado** que o caixa está fechado
+      * **Quando** o Vendedor tenta iniciar uma nova venda
+      * **Então** o sistema exibe a mensagem "Caixa fechado — solicite a abertura ao gerente" e impede a venda
+
+* **US 1.3:** Como Vendedor, eu quero registrar uma venda com múltiplos itens e diferentes formas de pagamento para que o atendimento ao cliente seja rápido e completo.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Venda simples em dinheiro*
+      * **Dado** que o caixa está aberto e há 3 unidades do "Produto A" em estoque com preço unitário de R$ 10,00
+      * **Quando** o Vendedor adiciona 2 unidades do "Produto A" e finaliza a venda com pagamento em dinheiro
+      * **Então** o sistema emite a nota de venda A4 com o logotipo da empresa, debita 2 unidades do estoque, e o saldo do caixa é acrescido de R$ 20,00
+    * *Cenário 2: Venda com múltiplas formas de pagamento*
+      * **Dado** que o caixa está aberto e o cliente vai pagar uma compra de R$ 200,00
+      * **Quando** o Vendedor registra R$ 100,00 em dinheiro e R$ 100,00 em PIX
+      * **Então** o sistema registra ambas as formas de pagamento na venda, emite a nota A4 discriminando os valores por forma de pagamento, e o saldo do caixa é atualizado apenas com o valor em dinheiro (R$ 100,00)
+    * *Cenário 3: Venda com múltiplos itens e quantidade superior ao estoque*
+      * **Dado** que há apenas 2 unidades do "Produto B" em estoque
+      * **Quando** o Vendedor tenta adicionar 5 unidades do "Produto B" à venda
+      * **Então** o sistema exibe a mensagem "Quantidade indisponível em estoque: 2 disponíveis" e impede a inclusão da quantidade excedente
+
+* **US 1.4:** Como Gerente, eu quero conceder desconto em uma venda usando minha senha para que eu tenha controle sobre a política de descontos da loja.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Concessão de desconto com senha de gerente*
+      * **Dado** que o Vendedor está com uma venda em andamento no valor total de R$ 100,00 e o Gerente está presente
+      * **Quando** o Gerente informa sua senha e concede 10% de desconto sobre o valor total
+      * **Então** o valor da venda é recalculado para R$ 90,00, o desconto é registrado no log com identificação do Gerente, e a nota A4 exibe o valor original, o percentual de desconto e o valor final
+    * *Cenário 2: Vendedor tenta dar desconto sem senha de gerente*
+      * **Dado** que o Vendedor está com uma venda em andamento e não possui a senha do Gerente
+      * **Quando** o Vendedor tenta aplicar qualquer desconto
+      * **Então** o sistema solicita a senha do Gerente e, se não fornecida, o desconto não é aplicado
+
+* **US 1.5:** Como Gerente, eu quero cancelar uma venda realizada para que eu possa tratar devoluções de clientes.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Cancelamento de venda com devolução ao estoque e estorno*
+      * **Dado** que uma venda foi realizada com 2 itens do "Produto C" no valor total de R$ 50,00 pagos em dinheiro, e o estoque do "Produto C" está em 8 unidades
+      * **Quando** o Gerente informa sua senha e cancela a venda
+      * **Então** o estoque do "Produto C" volta para 10 unidades, o saldo do caixa é reduzido em R$ 50,00, e a venda é marcada como cancelada com registro de data/hora e identificação do Gerente responsável
+    * *Cenário 2: Vendedor tenta cancelar venda*
+      * **Dado** que o Vendedor está logado e acessa o histórico de vendas
+      * **Quando** o Vendedor tenta cancelar uma venda
+      * **Então** o sistema solicita a senha do Gerente e, se não fornecida, o cancelamento não é realizado
+    * *Cenário 3: Cancelamento de venda com carnê*
+      * **Dado** que uma venda foi realizada no carnê em 3 parcelas e nenhuma parcela foi paga ainda
+      * **Quando** o Gerente cancela a venda
+      * **Então** o carnê é cancelado, as parcelas são removidas do contas a receber, o limite de crédito do cliente é restaurado, e o estoque é devolvido
+
+* **US 1.6:** Como Gerente, eu quero realizar uma sangria para que eu possa retirar dinheiro do caixa com registro formal.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Sangria realizada pelo gerente*
+      * **Dado** que o caixa está aberto com saldo atual de R$ 800,00
+      * **Quando** o Gerente registra uma sangria de R$ 200,00 informando o motivo "Pagamento de fornecedor"
+      * **Então** o saldo do caixa é reduzido para R$ 600,00, e o registro de sangria fica armazenado com data/hora, valor, motivo e identificação do Gerente
+    * *Cenário 2: Sangria com valor maior que o saldo disponível*
+      * **Dado** que o saldo do caixa em dinheiro é de R$ 300,00
+      * **Quando** o Gerente tenta registrar uma sangria de R$ 500,00
+      * **Então** o sistema exibe a mensagem "Saldo insuficiente em dinheiro: R$ 300,00 disponível" e impede a sangria
+    * *Cenário 3: Vendedor não pode realizar sangria*
+      * **Dado** que o Vendedor está logado
+      * **Quando** ele tenta acessar a função de sangria
+      * **Então** o sistema não exibe a opção de sangria no menu
+
+### Épico 2: Cadastros e Gestão de Dados Mestres
+
+* **US 2.1:** Como Gerente, eu quero cadastrar produtos com código de barras, grupo, subgrupo e preços diferenciados para que o PDV reconheça e precifique corretamente cada item.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Cadastro de produto completo*
+      * **Dado** que o Gerente acessa o módulo de cadastro de produtos
+      * **Quando** ele preenche descrição, código de barras "7891234567890", grupo "Bebidas", subgrupo "Refrigerantes", preço normal R$ 8,00 e preço carnê R$ 10,00
+      * **Então** o produto é salvo, fica disponível para busca por código de barras e descrição no PDV, e o preço aplicado na venda à vista é R$ 8,00 e no carnê é R$ 10,00
+    * *Cenário 2: Código de barras duplicado*
+      * **Dado** que já existe um produto cadastrado com o código de barras "7891234567890"
+      * **Quando** o Gerente tenta cadastrar outro produto com o mesmo código
+      * **Então** o sistema exibe "Código de barras já cadastrado para o produto [nome]" e impede a duplicidade
+    * *Cenário 3: Vendedor não acessa cadastro de produtos*
+      * **Dado** que o Vendedor está logado
+      * **Quando** ele tenta acessar o módulo de cadastro de produtos
+      * **Então** o sistema não exibe a opção no menu ou exibe mensagem de acesso restrito
+
+* **US 2.2:** Como Gerente, eu quero cadastrar clientes com limite de crédito para que eles possam comprar no carnê dentro do limite autorizado.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Cadastro de cliente com limite de crédito*
+      * **Dado** que o Gerente acessa o módulo de cadastro de clientes
+      * **Quando** ele preenche nome, CPF, endereço, telefone e define limite de crédito de R$ 500,00
+      * **Então** o cliente é salvo com situação "Liberado" e fica disponível para consulta no PDV durante vendas a prazo
+    * *Cenário 2: CPF duplicado*
+      * **Dado** que já existe um cliente cadastrado com CPF "123.456.789-00"
+      * **Quando** o Gerente tenta cadastrar outro cliente com o mesmo CPF
+      * **Então** o sistema exibe "CPF já cadastrado para o cliente [nome]" e impede a duplicidade
+
+* **US 2.3:** Como Gerente, eu quero cadastrar fornecedores para que eu possa associá-los às reposições de estoque e contas a pagar.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Cadastro de fornecedor*
+      * **Dado** que o Gerente acessa o módulo de cadastro de fornecedores
+      * **Quando** ele preenche razão social, CNPJ, telefone e endereço
+      * **Então** o fornecedor é salvo e fica disponível para seleção nas telas de reposição de estoque e lançamento de contas a pagar
+
+* **US 2.4:** Como Gerente, eu quero cadastrar as informações da minha empresa (incluindo logotipo) para que as notas de venda e relatórios sejam personalizados.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Cadastro da empresa com logotipo*
+      * **Dado** que o Gerente acessa o cadastro da empresa
+      * **Quando** ele preenche nome fantasia, razão social, CNPJ, endereço, telefone e carrega uma imagem de logotipo
+      * **Então** os dados são salvos e o logotipo aparece na nota de venda A4 e nos relatórios
+
+* **US 2.5:** Como Gerente, eu quero cadastrar usuários (vendedores) com login e senha para que o acesso ao sistema seja controlado por perfil.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Cadastro de usuário vendedor*
+      * **Dado** que o Gerente acessa o cadastro de usuários
+      * **Quando** ele cria um usuário com nome, login, senha e perfil "Vendedor"
+      * **Então** o usuário é salvo e, ao fazer login, terá acesso apenas às funções de venda (PDV) e consultas
+    * *Cenário 2: Login com credenciais inválidas*
+      * **Dado** que o usuário "joao" está cadastrado com senha "1234"
+      * **Quando** alguém tenta fazer login com o usuário "joao" e senha "0000"
+      * **Então** o sistema exibe "Usuário ou senha inválidos" e impede o acesso
+
+### Épico 3: Financeiro e Creditário (Carnê)
+
+* **US 3.1:** Como Vendedor, eu quero realizar uma venda no carnê respeitando o limite de crédito do cliente para que a loja possa vender a prazo com segurança.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Venda no carnê com limite disponível*
+      * **Dado** que o caixa está aberto e o cliente "Maria" tem limite de crédito de R$ 500,00 e não possui parcelas em aberto
+      * **Quando** o Vendedor seleciona o cliente "Maria", adiciona produtos totalizando R$ 150,00 com preço carnê e o cliente escolhe pagar em 3 parcelas
+      * **Então** o sistema calcula 3 parcelas de R$ 50,00 cada, debita R$ 150,00 do limite disponível (restando R$ 350,00), gera as 3 parcelas no contas a receber com vencimentos mensais consecutivos, e emite a nota A4 com a informação "Carnê — 3x de R$ 50,00"
+    * *Cenário 2: Venda no carnê acima do limite de crédito*
+      * **Dado** que o cliente "Maria" tem limite de crédito de R$ 500,00 e já possui R$ 400,00 em parcelas em aberto (limite disponível: R$ 100,00)
+      * **Quando** o Vendedor tenta finalizar uma venda no carnê para "Maria" no valor de R$ 150,00
+      * **Então** o sistema exibe "Limite de crédito insuficiente. Disponível: R$ 100,00" e impede a venda
+    * *Cenário 3: Cliente bloqueado por atraso*
+      * **Dado** que o cliente "João" possui parcelas vencidas há mais de 30 dias e sua situação está "Bloqueado"
+      * **Quando** o Vendedor tenta realizar qualquer venda no carnê para "João"
+      * **Então** o sistema exibe "Cliente bloqueado por atraso no carnê" e impede a venda a prazo. A venda à vista permanece permitida.
+
+* **US 3.2:** Como Gerente, eu quero configurar as regras de juros e multa do carnê para que o sistema calcule automaticamente os valores de parcelas em atraso.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Configuração de juros diários e multa fixa*
+      * **Dado** que o Gerente acessa as configurações do carnê
+      * **Quando** ele define multa fixa de R$ 5,00 por atraso e juros de 0,033% ao dia (1% ao mês)
+      * **Então** o sistema passa a usar esses parâmetros para calcular o valor atualizado de parcelas vencidas na tela de baixa e nos relatórios
+    * *Cenário 2: Cálculo de parcela em atraso*
+      * **Dado** que uma parcela de R$ 50,00 venceu há 10 dias, multa fixa de R$ 5,00 e juros de 0,033% ao dia
+      * **Quando** o Gerente consulta o contas a receber
+      * **Então** o sistema exibe o valor atualizado de R$ 55,00 (R$ 50,00 original + R$ 5,00 multa + juros sobre o valor original) como valor devido
+
+* **US 3.3:** Como Gerente, eu quero dar baixa em parcelas de carnê (contas a receber) para que o sistema mantenha o controle do que já foi pago e do que ainda está em aberto.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Baixa de parcela no prazo*
+      * **Dado** que o cliente "Maria" possui uma parcela de R$ 50,00 com vencimento hoje
+      * **Quando** o Gerente localiza a parcela e confirma a baixa com pagamento em dinheiro
+      * **Então** a parcela é marcada como "Paga" com data de pagamento, o saldo do caixa é acrescido de R$ 50,00, e o limite de crédito da cliente é restaurado em R$ 50,00
+    * *Cenário 2: Baixa de parcela em atraso*
+      * **Dado** que o cliente "João" possui uma parcela de R$ 50,00 vencida há 10 dias, totalizando R$ 55,00 com juros e multa
+      * **Quando** o Gerente dá baixa na parcela recebendo R$ 55,00 em dinheiro
+      * **Então** a parcela é marcada como "Paga" com o valor pago de R$ 55,00, o saldo do caixa é acrescido de R$ 55,00 e o limite de crédito é restaurado proporcionalmente
+
+* **US 3.4:** Como Gerente, eu quero lançar e dar baixa em contas a pagar para que eu mantenha o controle das obrigações financeiras da loja.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Lançamento de conta a pagar*
+      * **Dado** que o Gerente acessa o módulo de contas a pagar
+      * **Quando** ele lança uma conta de R$ 500,00 para o fornecedor "Distribuidora ABC" com vencimento em 30 dias
+      * **Então** a conta é registrada e fica disponível no relatório de contas a pagar e no fluxo de caixa
+    * *Cenário 2: Baixa de conta a pagar*
+      * **Dado** que existe uma conta a pagar de R$ 500,00 em aberto para o fornecedor "Distribuidora ABC"
+      * **Quando** o Gerente localiza a conta e confirma o pagamento
+      * **Então** a conta é marcada como "Paga" com data de pagamento e aparece no relatório de contas pagas
+
+* **US 3.5:** Como Gerente, eu quero lançar despesas fixas mensais (aluguel, luz, salários) para que esses valores fiquem registrados e possam ser usados futuramente no cálculo de lucratividade.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Lançamento de despesa fixa*
+      * **Dado** que o Gerente acessa o módulo financeiro
+      * **Quando** ele lança uma despesa de "Aluguel" no valor de R$ 2.000,00 com vencimento no dia 10 de cada mês
+      * **Então** a despesa é registrada com a categoria "Fixa", fica visível no fluxo de caixa e fica armazenada para compor a base de cálculo do DRE em versão futura
+
+### Épico 4: Relatórios e Consultas Essenciais
+
+* **US 4.1:** Como Gerente, eu quero visualizar o relatório de vendas por período para que eu acompanhe o desempenho da loja.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Relatório de vendas do dia*
+      * **Dado** que houve 5 vendas no dia atual totalizando R$ 1.200,00
+      * **Quando** o Gerente acessa o relatório de vendas do dia
+      * **Então** o sistema exibe a lista das 5 vendas com valor, forma de pagamento, vendedor e horário, e o totalizador de R$ 1.200,00 no rodapé
+    * *Cenário 2: Relatório de vendas por período customizado*
+      * **Dado** que o Gerente quer consultar as vendas do mês anterior
+      * **Quando** ele seleciona o período de 01/05/2026 a 31/05/2026
+      * **Então** o sistema exibe todas as vendas do período com os mesmos detalhes do cenário 1 e o totalizador do período
+    * *Cenário 3: Vendedor não acessa relatórios financeiros*
+      * **Dado** que o Vendedor está logado
+      * **Quando** ele tenta acessar relatórios de vendas ou financeiros
+      * **Então** o sistema não exibe as opções de relatórios no menu
+
+* **US 4.2:** Como Gerente, eu quero visualizar o fluxo de caixa para que eu saiba exatamente o saldo e as movimentações em cada período.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Fluxo de caixa detalhado*
+      * **Dado** que há registros de abertura de caixa, vendas, sangrias, baixas de carnê e contas pagas no período
+      * **Quando** o Gerente acessa o fluxo de caixa detalhado do dia
+      * **Então** o sistema lista todas as movimentações em ordem cronológica (entradas e saídas) com saldo acumulado após cada movimento, e exibe o saldo final consolidado
+
+* **US 4.3:** Como Gerente, eu quero consultar o relatório de estoque mínimo para saber quais produtos preciso repor.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Relatório de estoque mínimo*
+      * **Dado** que existem produtos com estoque atual abaixo da quantidade mínima definida
+      * **Quando** o Gerente acessa o relatório de estoque mínimo
+      * **Então** o sistema lista todos os produtos nessa situação, exibindo descrição, estoque atual, estoque mínimo e a diferença (quantidade a repor)
+
+* **US 4.4:** Como Vendedor, eu quero consultar rapidamente produtos e clientes para que eu possa atender o cliente no balcão sem demora.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Consulta de produto por código de barras*
+      * **Dado** que o produto "Refrigerante Cola 2L" está cadastrado com código "7891234567890" e estoque de 15 unidades
+      * **Quando** o Vendedor digita ou escaneia o código "7891234567890" na tela de consulta
+      * **Então** o sistema exibe descrição, preço normal, preço carnê e quantidade em estoque do produto
+    * *Cenário 2: Consulta de situação do cliente*
+      * **Dado** que o cliente "Maria" está cadastrada e possui 2 parcelas de carnê em aberto
+      * **Quando** o Vendedor busca por "Maria" na consulta de clientes
+      * **Então** o sistema exige os dados cadastrais, limite de crédito, saldo disponível, parcelas em aberto com vencimentos, e situação (Liberado/Bloqueado)
+
+* **US 4.5:** Como Gerente, eu quero consultar clientes em atraso para que eu possa tomar providências de cobrança.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Listagem de clientes em atraso*
+      * **Dado** que existem 3 clientes com parcelas vencidas e não pagas
+      * **Quando** o Gerente acessa a consulta de clientes em atraso
+      * **Então** o sistema lista os 3 clientes com nome, quantidade de parcelas em atraso, valor total devido (atualizado com juros/multa) e dias de atraso da parcela mais antiga
+
+### Épico 5: Segurança, Backup e Infraestrutura
+
+* **US 5.1:** Como Gerente, eu quero fazer backup manual dos dados para que eu proteja a loja contra perda de informações em caso de falha do computador.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Backup realizado com sucesso*
+      * **Dado** que o Gerente acessa a função de backup
+      * **Quando** ele escolhe o local de destino (ex: pen drive ou HD externo) e confirma
+      * **Então** o sistema gera o arquivo de backup contendo todos os dados (produtos, clientes, vendas, financeiro, configurações) no local escolhido e exibe "Backup realizado com sucesso" com data e hora
+    * *Cenário 2: Falha no backup por destino inacessível*
+      * **Dado** que o Gerente escolhe um destino que não está acessível (ex: pen drive removido durante o processo)
+      * **Quando** o sistema tenta gravar o arquivo
+      * **Então** o sistema exibe "Falha ao realizar backup — verifique o destino" e não corrompe os dados ativos
+
+* **US 5.2:** Como Gerente, eu quero restaurar um backup para que eu possa recuperar os dados após troca de computador ou falha.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Restauração de backup*
+      * **Dado** que o Gerente possui um arquivo de backup válido e o sistema está instalado
+      * **Quando** o Gerente acessa a função de restauração e seleciona o arquivo de backup
+      * **Então** o sistema substitui todos os dados atuais pelos dados do backup e exibe "Restauração concluída com sucesso"
+    * *Cenário 2: Arquivo de backup inválido ou corrompido*
+      * **Dado** que o Gerente seleciona um arquivo que não é um backup válido do sistema
+      * **Quando** ele tenta restaurar esse arquivo
+      * **Então** o sistema exibe "Arquivo de backup inválido ou corrompido" e não altera os dados atuais
+
+* **US 5.3:** Como Fornecedor do Sistema, eu quero que o software seja protegido por licença vinculada ao computador para que apenas lojistas autorizados utilizem o sistema.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Ativação com arquivo-chave válido*
+      * **Dado** que o sistema foi instalado em um computador novo e ainda não foi ativado
+      * **Quando** o lojista carrega o arquivo-chave fornecido no momento da compra
+      * **Então** o sistema valida o arquivo-chave, vincula a licença ao computador (hardware), ativa todas as funcionalidades e impede que o mesmo arquivo-chave seja usado em outra máquina
+    * *Cenário 2: Cópia do sistema para outro computador sem nova chave*
+      * **Dado** que o sistema foi copiado para um computador diferente do original
+      * **Quando** o sistema é iniciado no novo computador
+      * **Então** o sistema detecta que o hardware não corresponde à licença e exibe "Licença inválida para este computador — entre em contato com o suporte"
+    * *Cenário 3: Solicitação de nova chave por falha de hardware*
+      * **Dado** que o computador original quebrou e o lojista entrou em contato com o suporte comprovando a situação
+      * **Quando** o Suporte Técnico libera uma nova chave de ativação
+      * **Então** o lojista consegue ativar o sistema no novo computador utilizando o backup restaurado e a nova chave, e a chave antiga é invalidada
+
+* **US 5.4:** Como Gerente, eu quero que ações críticas sejam registradas em log para que eu possa auditar quem fez o quê no sistema.
+  * **Critérios de Aceitação:**
+    * *Cenário 1: Registro de log em ações críticas*
+      * **Dado** que o Gerente realiza uma das seguintes ações: cancelamento de venda, concessão de desconto, sangria, alteração de preço de produto ou exclusão de registro
+      * **Quando** a ação é executada com sucesso
+      * **Então** o sistema registra em log: data/hora, usuário responsável, tipo de ação, detalhes do que foi alterado (ex: "Venda #123 cancelada — valor R$ 150,00 — motivo: devolução")
+    * *Cenário 2: Consulta de log pelo gerente*
+      * **Dado** que existem registros de log armazenados
+      * **Quando** o Gerente acessa a consulta de log e filtra por data
+      * **Então** o sistema exibe todos os eventos do período em ordem cronológica com usuário, ação e detalhes
+
+## 5. Requisitos Funcionais
+
+1. **RF01 — Autenticação:** O sistema deve exigir login e senha para acesso, com dois perfis de acesso: Gerente (acesso total) e Vendedor (apenas PDV e consultas).
+2. **RF02 — Abertura de Caixa:** Permitir que o Gerente abra o caixa informando um valor inicial em dinheiro. Apenas um caixa pode estar aberto por dia. Sem caixa aberto, vendas não podem ser realizadas.
+3. **RF03 — Fechamento de Caixa:** Permitir que o Gerente feche o caixa com conferência de saldo, registrando o valor real conferido e eventuais divergências.
+4. **RF04 — PDV (Venda):** Permitir que o Vendedor registre uma venda com múltiplos itens, informando cliente (opcional), quantidades, e forma(s) de pagamento. O sistema deve buscar produtos por código de barras ou descrição.
+5. **RF05 — Formas de Pagamento:** Suportar dinheiro, cartão de crédito, cartão de débito e PIX como formas de pagamento. Uma venda pode ter mais de uma forma de pagamento (pagamento misto).
+6. **RF06 — Desconto em Venda:** Permitir desconto percentual sobre o valor total da venda apenas mediante senha do Gerente. O desconto deve ser registrado em log com identificação do Gerente.
+7. **RF07 — Baixa de Estoque:** Deduzir automaticamente a quantidade vendida do estoque no momento da finalização da venda. Impedir venda de quantidade superior ao disponível.
+8. **RF08 — Nota de Venda A4:** Emitir nota de venda em formato A4 com logotipo da empresa, dados da venda (itens, quantidades, preços, forma de pagamento, valor total) e informações da loja.
+9. **RF09 — Cancelamento de Venda:** Permitir o cancelamento de venda apenas com senha do Gerente, com devolução dos itens ao estoque, estorno financeiro e registro em log. Para vendas no carnê, cancelar também as parcelas a receber.
+10. **RF10 — Sangria:** Permitir que o Gerente registre retirada de dinheiro do caixa informando valor e motivo obrigatórios. O valor da sangria não pode exceder o saldo disponível em dinheiro.
+11. **RF11 — Carnê (Creditário):** Permitir venda a prazo no carnê com preço diferenciado, respeitando o limite de crédito do cliente. O número de parcelas é escolhido pelo cliente até um máximo parametrizável pelo Gerente.
+12. **RF12 — Cálculo de Juros e Multa:** Calcular automaticamente multa fixa e juros diários sobre parcelas de carnê vencidas, conforme parâmetros configurados pelo Gerente.
+13. **RF13 — Bloqueio de Cliente:** Bloquear automaticamente cliente para novas compras no carnê quando houver parcelas vencidas há mais de 30 dias. O Gerente pode reverter o bloqueio manualmente após regularização.
+14. **RF14 — Baixa de Contas a Receber:** Permitir que o Gerente dê baixa em parcelas de carnê, registrando data de pagamento e forma de recebimento. Atualizar saldo do caixa e restaurar limite de crédito do cliente proporcionalmente.
+15. **RF15 — Contas a Pagar:** Permitir lançamento e baixa de contas a pagar com fornecedor, valor, vencimento e data de pagamento.
+16. **RF16 — Despesas Fixas:** Permitir o lançamento de despesas fixas mensais (aluguel, luz, salários) com categoria e valor para compor a base de cálculo de lucratividade.
+17. **RF17 — Cadastro de Produtos:** Permitir cadastro de produtos com descrição, código de barras, grupo, subgrupo, preço normal, preço carnê e quantidade em estoque. Não permitir código de barras duplicado.
+18. **RF18 — Reposição de Estoque:** Permitir que o Gerente adicione quantidade ao estoque de um produto, registrando fornecedor, quantidade e custo de aquisição.
+19. **RF19 — Estoque Mínimo:** Permitir definir quantidade mínima por produto. Exibir alerta visual (não bloqueante) no PDV quando o estoque estiver abaixo do mínimo.
+20. **RF20 — Cadastro de Clientes:** Permitir cadastro de clientes com nome, CPF, endereço, telefone e limite de crédito. Não permitir CPF duplicado.
+21. **RF21 — Cadastro de Fornecedores:** Permitir cadastro de fornecedores com razão social, CNPJ, telefone e endereço.
+22. **RF22 — Cadastro da Empresa:** Permitir cadastro dos dados da loja (nome fantasia, razão social, CNPJ, endereço, telefone) e upload de logotipo para uso nas notas de venda.
+23. **RF23 — Cadastro de Usuários:** Permitir que o Gerente cadastre usuários com nome, login, senha e perfil (Gerente ou Vendedor).
+24. **RF24 — Relatório de Vendas:** Gerar relatório de vendas filtrável por período, vendedor e cliente, exibindo itens vendidos, valores, formas de pagamento e totalizadores.
+25. **RF25 — Relatório de Vendas por Forma de Pagamento:** Gerar relatório de vendas agrupado por forma de pagamento (dinheiro, cartão de crédito, cartão de débito, PIX) dentro de um período.
+26. **RF26 — Relatório de Estoque:** Gerar relatório de posição de estoque atual e relatório de produtos abaixo do estoque mínimo.
+27. **RF27 — Relatórios Financeiros:** Gerar relatórios de contas a pagar, contas pagas, contas a receber (carnê), contas recebidas e fluxo de caixa detalhado e resumido.
+28. **RF28 — Consulta de Produtos:** Permitir busca de produtos por código de barras, descrição ou referência, exibindo informações de preço e estoque.
+29. **RF29 — Consulta de Clientes:** Permitir busca de clientes exibindo dados cadastrais, limite de crédito, parcelas em aberto, histórico de compras e situação (Liberado/Bloqueado).
+30. **RF30 — Consulta de Clientes em Atraso:** Listar clientes com parcelas vencidas não pagas, exibindo valor total devido (atualizado com juros/multa) e dias de atraso.
+31. **RF31 — Histórico de Vendas por Cliente:** Exibir todo o histórico de compras de um cliente, incluindo vendas à vista e carnê, com data, valor, itens e situação (ativa/cancelada).
+32. **RF32 — Backup Manual:** Permitir que o Gerente gere um arquivo de backup completo dos dados em local de sua escolha (pen drive, HD externo, etc.).
+33. **RF33 — Restauração de Backup:** Permitir que o Gerente restaure os dados a partir de um arquivo de backup previamente gerado, substituindo integralmente os dados atuais.
+34. **RF34 — Licenciamento por Arquivo-Chave:** Proteger o sistema contra cópia não autorizada vinculando a ativação ao hardware do computador. Exigir arquivo-chave válido na primeira execução e impedir execução em hardware diferente.
+35. **RF35 — Log de Auditoria:** Registrar automaticamente data/hora, usuário e detalhes de ações críticas: exclusão de registros, cancelamento de vendas, concessão de desconto, sangria, alteração de preços.
+36. **RF36 — Proteção contra Execuções Simultâneas:** Impedir que múltiplas instâncias do sistema sejam executadas simultaneamente no mesmo computador.
+37. **RF37 — Alerta de Estoque Mínimo no PDV:** Durante a venda, se um produto adicionado estiver com estoque abaixo do mínimo, exibir alerta visual (ex: ícone ou texto em destaque) sem bloquear a venda.
+
+## 6. Requisitos Não Funcionais
+
+1. **RNF01 — Funcionamento Offline:** O sistema deve operar 100% offline, sem nenhuma dependência de conexão com internet para suas funcionalidades de negócio.
+2. **RNF02 — Plataforma:** O sistema deve executar em ambiente Windows 11 (ambiente desktop, não web).
+3. **RNF03 — Usuário Único:** O sistema deve ser utilizado por apenas uma pessoa por vez (não há suporte a acesso simultâneo ou concorrente).
+4. **RNF04 — Banco de Dados Local:** Todo o armazenamento de dados deve ser feito localmente na máquina onde o sistema está instalado, sem acesso remoto ou via rede.
+5. **RNF05 — Tempo de Resposta no PDV:** A busca de produtos por código de barras ou descrição e a finalização de venda devem responder em até 1 segundo para não prejudicar o fluxo de atendimento no balcão.
+6. **RNF06 — Segurança de Acesso:** Senhas de usuários devem ser armazenadas de forma segura (hash criptográfico, não em texto plano).
+7. **RNF07 — Integridade de Dados:** O sistema deve garantir que operações críticas (venda, baixa de estoque, baixa financeira) sejam atômicas — ou todas as etapas são concluídas com sucesso, ou nenhuma é aplicada parcialmente.
+8. **RNF08 — Resiliência de Backup:** O processo de backup deve gerar um arquivo íntegro e autocontido que permita a restauração completa em uma nova instalação do sistema. O processo de restauração deve validar a integridade do arquivo antes de aplicá-lo.
+9. **RNF09 — Validação de Dados:** Todos os campos de entrada devem ser validados no momento do preenchimento (formatos, obrigatoriedades, valores negativos) para evitar dados inválidos na base.
+10. **RNF10 — Usabilidade para Leigos:** A interface deve ser simples e intuitiva, adequada para usuários com baixo letramento digital, com fontes legíveis, botões grandes e fluxos de poucos passos para as operações mais frequentes (venda, consulta).
+11. **RNF11 — Navegação por Teclado:** O PDV deve ser totalmente operável por teclado (atalhos, navegação por Tab), permitindo agilidade no atendimento sem o uso obrigatório do mouse.
+12. **RNF12 — Impressão A4:** O sistema deve gerar a nota de venda em formato A4 com layout limpo contendo logotipo, dados da loja, itens da venda, formas de pagamento e valor total.
+13. **RNF13 — Proteção de Licença:** O mecanismo de arquivo-chave deve ser robusto o suficiente para impedir que um usuário leigo copie a pasta do sistema para outro computador e continue utilizando.
+14. **RNF14 — Desempenho com Volume de Dados:** O sistema deve manter desempenho aceitável (consultas em até 2 segundos) com volumes típicos de um pequeno/médio varejista: até 10.000 produtos, 5.000 clientes e 100.000 registros de vendas.
+15. **RNF15 — Idioma:** Toda a interface do sistema deve estar em português brasileiro (PT-BR).
+
+## 7. Métricas de Sucesso
+
+As seguintes métricas serão utilizadas pela Natural Tecnologia e pelo cliente para avaliar o sucesso do MVP após o lançamento:
+
+1. **Adoção do PDV:** 100% das vendas diárias da loja sendo registradas exclusivamente pelo superVenda em até 7 dias após a implantação. O lojista não deve precisar recorrer a anotações em papel ou planilhas paralelas.
+2. **Fechamento de Caixa sem Divergências:** O índice de fechamentos de caixa com divergência (diferença entre saldo esperado e saldo real) deve ser inferior a 5% dos dias operados, indicando que o registro de movimentações está sendo feito corretamente.
+3. **Tempo de Atendimento no Balcão:** O tempo médio para registrar uma venda de 3 itens com 1 forma de pagamento não deve ultrapassar 30 segundos (da leitura do primeiro código de barras até a emissão da nota A4), mantendo ou melhorando a agilidade do processo manual anterior.
+4. **Controle de Carnê sem Perdas:** Após 60 dias de uso, o lojista deve relatar que o número de parcelas de carnê "esquecidas" ou não cobradas foi reduzido a zero, demonstrando que o sistema está efetivamente apoiando a gestão de contas a receber.
+5. **Autonomia Operacional:** O lojista deve ser capaz de executar backup e restauração sem suporte técnico após a primeira orientação, validado pela execução bem-sucedida de ao menos 2 backups em dias diferentes nos primeiros 30 dias.
+6. **Satisfação do Usuário Vendedor:** Em conversa de feedback após 30 dias, o vendedor deve relatar que o sistema é "fácil de usar" e que não precisa chamar o gerente mais do que 2 vezes por dia para operações de override (desconto, cancelamento), indicando que a divisão de perfis está adequada.
+7. **Zero Ocorrências de Perda de Dados:** Em 90 dias de uso, não deve haver nenhum episódio de corrupção ou perda de dados que não possa ser recuperado via backup.
