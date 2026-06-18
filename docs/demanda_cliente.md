@@ -38,7 +38,7 @@ Funcionalidades:
 - Vendas: Vendas por vendedor, período, clientes, produtos, categorias de produtos, formas de pagamento, margem de lucro e produtos mais vendidos
 - Vendas: Resumo de vendas mensais, diário.
 - Compras: Compras por período, fornecedor e produtos
-- Estoque: Estoque, Estoque mínimo, Inventário e Validade de produto
+- Estoque: Estoque, Estoque mínimo, Inventário 
 - Financeiro: Contas a pagar
 - Financeiro: Contas pagas
 - Financeiro: Contas a receber
@@ -70,8 +70,15 @@ Funcionalidades:
 
 
 ## Observações gerais
-- Apenas 1 computador, 1 pessoa por vez no sistema
+- Apenas 1 computador com windows 11, 1 pessoa por vez no sistema. sem acesso via rede
 - Não emite documentos fiscais
 - Criar proteção contra multiplas instalações. licença com arquivo-chave. Ao instalar utiliza arquivo chave. Arquivo chave só pode ser utilizado uma vez
 - Banco de dados local
 - Não conectado à internet
+- Apenas 2 níveis: Gerente (acesso total) e Vendedor (apenas vendas e consultas)
+- O segundo preço do produto (preço a prazo ou atacado) : O vendedor escolhe manualmente qual preço usar em cada venda. 
+- Não preciso de controle de validade, apenas do controle de estoque mínimo
+- Nas vendas a prazo (carnê), o acréscimo por parcelamento deve ser calculado da seguinte forma: Uma tabela onde eu defino manualmente o acréscimo para cada número de parcelas (ex: 2x = 3%, 3x = 5%, 4x = 8%)
+- No cálculo do lucro (DRE), além de vendas menos compras, incluir despesas fixas (aluguel, luz, salários)
+- Se o computador quebrar, for formatado ou trocado: usuário entra em contato com o suporte para liberar uma nova chave de ativação, comprovando a situação.
+- Sobre a comissão de vendedores : Um percentual definido por produto, podendo ser diferente para cada item
